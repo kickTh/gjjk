@@ -1,0 +1,36 @@
+local p=game.Players.LocalPlayer;
+local oldcframe;
+local holdingfoil=false;
+p.Character.Humanoid:SetStateEnabled(15,false);
+p.Character.Humanoid:SetStateEnabled(16,false);
+-- p.Character.Humanoid:SetStateEnabled(18,false);
+p.CharacterRemoving:Connect(function()
+    if (p.Character) then
+        local t=p.Character:FindFirstChild("Torso")
+        if (t ~= nil) then oldcframe=t.CFrame end
+        if (p.Character:findFirstChild("Foil")) then holdingfoil=true end
+    end
+end)
+p.CharacterAdded:Connect(function()
+    while p.Character==nil do wait() end
+    while p.Character.Parent==nil do wait() end
+    local h=p.Character:WaitForChild("Humanoid")
+    local rp=p.Character:WaitForChild("HumanoidRootPart")
+    --[[ created by static / "Des" ]]
+    if (h ~= nil and rp ~= nil) then
+        h:SetStateEnabled(15,false);
+        h:SetStateEnabled(16,false);
+        -- h:SetStateEnabled(18,false);
+        for i=1,10 do
+            rp.CFrame=oldcframe;
+        end
+        if (holdingfoil) then
+            holdingfoil=false
+            local foil=p.Backpack:FindFirstChild("Foil")
+            if (foil ~= nil) then
+                foil.Parent=p.Character
+            end
+        end
+    end
+end)
+
